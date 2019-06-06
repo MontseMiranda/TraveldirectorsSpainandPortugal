@@ -1,0 +1,360 @@
+---
+title: "Travel directors Spain and Portugal, September 15th to October 6th 2019"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: sandstone
+
+---
+
+DaybyDay {.storyboard}
+===================================== 
+
+### **Day 1- Sunday, September 15th**
+
+
+<br><br>
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(formattable)
+library(readxl)
+
+program <- read_excel("program.xlsx", sheet = "15 sep")
+program$finish[is.na(program$finish)] <- ""
+program$notes[is.na(program$notes)] <- ""
+program$notes[is.na(program$notes)] <- ""
+
+table_style <- function(x){
+  x %>% kable(format = "html", escape = F) %>% kable_styling(fixed_thead = T,bootstrap_options = c("striped","condensed","hover","responsive")) %>%
+row_spec(0, bold = T, color = "white", background = "black") 
+}
+
+program %>% select(1:6) %>% 
+  mutate(
+  owner = cell_spec(owner,
+  "html", color = ifelse(owner == "CUTTING","#ee7600", "blue"))) %>% table_style()
+
+
+```
+
+
+
+
+
+### **Day 2- Monday, September 16th** 
+
+
+<br><br>
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+
+
+program <- read_excel("program.xlsx", sheet = "16 sep")
+program$finish[is.na(program$finish)] <- ""
+program$notes[is.na(program$notes)] <- ""
+program$notes[is.na(program$notes)] <- ""
+
+table_style <- function(x){
+  x %>% kable(format = "html", escape = F) %>% kable_styling(fixed_thead = T,bootstrap_options = c("striped","condensed","hover","responsive")) %>%
+row_spec(0, bold = T, color = "white", background = "black") 
+}
+
+program %>% select(1:6) %>% 
+  mutate(
+  owner = cell_spec(owner,
+  "html", color = ifelse(owner == "CEE","#ee7600", "blue"))) %>% table_style()
+
+```
+
+
+### **Day 3- Tuesday, September 17th** 
+
+
+<br><br>
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+
+
+program <- read_excel("program.xlsx", sheet = "17 sep")
+program$finish[is.na(program$finish)] <- ""
+program$notes[is.na(program$notes)] <- ""
+program$notes[is.na(program$notes)] <- ""
+
+table_style <- function(x){
+  x %>% kable(format = "html", escape = F) %>% kable_styling(fixed_thead = T,bootstrap_options = c("striped","condensed","hover","responsive")) %>%
+row_spec(0, bold = T, color = "white", background = "black") 
+}
+
+program %>% select(1:6) %>% 
+  mutate(
+  owner = cell_spec(owner,
+  "html", color = ifelse(owner == "CEE","#ee7600", "blue"))) %>% table_style()
+
+```
+
+
+### **Day 4- Monday, September 18th** 
+
+
+<br><br>
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+
+
+program <- read_excel("program.xlsx", sheet = "18 sep")
+program$finish[is.na(program$finish)] <- ""
+program$notes[is.na(program$notes)] <- ""
+program$notes[is.na(program$notes)] <- ""
+
+table_style <- function(x){
+  x %>% kable(format = "html", escape = F) %>% kable_styling(fixed_thead = T,bootstrap_options = c("striped","condensed","hover","responsive")) %>%
+row_spec(0, bold = T, color = "white", background = "black") 
+}
+
+program %>% select(1:6) %>% 
+  mutate(
+  owner = cell_spec(owner,
+  "html", color = ifelse(owner == "CEE","#ee7600", "blue"))) %>% table_style()
+
+```
+
+
+### **Day 4- Monday, September 16th** 
+
+
+<br><br>
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+
+
+program <- read_excel("program.xlsx", sheet = "18 sep")
+program$finish[is.na(program$finish)] <- ""
+program$notes[is.na(program$notes)] <- ""
+program$notes[is.na(program$notes)] <- ""
+
+table_style <- function(x){
+  x %>% kable(format = "html", escape = F) %>% kable_styling(fixed_thead = T,bootstrap_options = c("striped","condensed","hover","responsive")) %>%
+row_spec(0, bold = T, color = "white", background = "black") 
+}
+
+program %>% select(1:6) %>% 
+  mutate(
+  owner = cell_spec(owner,
+  "html", color = ifelse(owner == "CEE","#ee7600", "blue"))) %>% table_style()
+
+```
+
+
+Budget 
+=================
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+tables <- function(x){
+
+x %>% select(1:5) %>% mutate(total = paste("EUR", format(round(total, 2L),nsmall = 2,big.mark = ","))) %>% 
+  kable(
+   format = "html", escape = F) %>% kable_styling(fixed_thead =   T,bootstrap_options = c("striped","condensed","hover","responsive")) %>%
+row_spec(0, bold = T, color = "white", background = "black")  %>% 
+  column_spec(1, width = "8em") %>% 
+  column_spec(5,bold = TRUE, width = "8em")}
+```
+
+
+
+_**Travel Directors Spain and Portugal**_ {data-width=850}
+-------------------------------------------
+
+### Budget as of June 3rd
+
+<br><br>
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+library(DT)
+library(readxl)
+library(lubridate)
+library(dplyr)
+library(chron)
+library(kableExtra)
+library(scales)
+library(tidyverse)
+
+budget <- read_excel("rooming.xlsx", sheet = "bud", range = "B13:G153") 
+budget <- sapply(budget, as.character)
+budget[is.na(budget)] <- ""
+budget <- data.frame(budget, stringsAsFactors = FALSE)
+class(budget$bud_units) <- "numeric"
+class(budget$bud_cost) <- "numeric"
+class(budget$bud_total) <- "numeric"
+
+names(budget) <- c("date","description","units","unit cost","total","category")
+
+
+budget[nrow(budget),] <- c("","","<strong>Total</strong>","",sum(budget$total),"")
+
+class(budget$total) <- "numeric"
+
+tables(budget)
+
+```
+
+_**Travel Directors Group Spain and Portugal**_{data-width=150}
+-------------------------------------------
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(dplyr)
+library(flexdashboard)
+
+budget <- budget[-nrow(budget),]
+
+bud_transfers <- budget %>% filter(category == "transfer") %>% summarise(total= sum(total)) %>% prettyNum(big.mark = ",")
+
+bud_activity <- budget %>% filter(category == "activity") %>% summarise(total= sum(total))%>% prettyNum(big.mark = ",")
+
+bud_hotel <- budget %>% filter(category == "hotel") %>% summarise(total = sum(total))%>% prettyNum(big.mark = ",")
+
+bud_restaurant <- budget %>% filter(category == "restaurant") %>%  summarise(total = sum(total)) %>% prettyNum(big.mark = ",")
+
+
+```
+
+<br>
+
+
+### activities
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+valueBox(bud_activity, 
+         icon = "fa-walking", 
+         caption = "Euros in activities",
+         color = "#b6fcd5")
+```
+
+
+### transfers
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+valueBox(bud_transfers, icon = "fa-shuttle-van",
+         caption = "Euros in transfers",
+         color = "#c6e2ff")
+
+```
+
+### restaurants
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+valueBox(bud_restaurant, 
+         icon = "fa-utensils", 
+         caption = "Euros in offsite restaurants",
+         color = "#fdc9d9")
+```
+
+
+
+
+Proforma {data-navmenu="financials"}
+===================================== 
+
+
+_**Travel directors Spain and Portugal**_ {data-width=850}
+-------------------------------------------
+
+### Budget as of June 3rd, 2019
+
+<br>
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+library(DT)
+library(readxl)
+library(lubridate)
+library(dplyr)
+library(chron)
+library(kableExtra)
+library(scales)
+library(tidyverse)
+
+proforma <- read_excel("rooming.xlsx", sheet = "prof", range = "C12:H153") 
+proforma <- sapply(proforma, as.character)
+proforma[is.na(proforma)] <- ""
+proforma <- data.frame(proforma, stringsAsFactors = FALSE)
+class(proforma$prof_units) <- "numeric"
+class(proforma$prof_cost) <- "numeric"
+class(proforma$prof_total) <- "numeric"
+names(proforma) <- c("date","description","units","unit cost","total","category")
+
+
+proforma[nrow(proforma),] <- c("","","<strong>Total</strong>","",sum(proforma$total),"")
+
+class(proforma$total) <- "numeric"
+
+tables(proforma)
+
+
+```
+
+_**Travel Directors Spain and Portugal**_ {data-width=150}
+-------------------------------------------
+
+<br><br>
+
+
+### total proforma
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+library(dplyr)
+library(flexdashboard)
+
+dip <- read_excel("rooming.xlsx", sheet = "dip") 
+dip$amount <- as.numeric(dip$amount)
+dip_sum <- dip %>% group_by(paid) %>% summarise(sum = sum(amount)) 
+
+total <- sum(dip_sum$sum)
+
+total %>% prettyNum(big.mark = ",") %>% 
+valueBox(
+         icon = "fa-euro-sign", 
+         caption = "Total requested",
+         color = "#ffa500")
+```
+
+
+### _**Total paid %**_
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+paid_dip <- dip_sum$sum[dip_sum$paid == "yes"] 
+
+gauge(100*paid_dip/total, min = 0, max = 100, symbol = '%', gaugeSectors(colors = "yellow"),label = paste0("Total paid ", paid_dip," "))
+
+```
+
+
+### _**Summary table %**_
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(formattable)
+library(readxl)
+
+dip <- read_excel("rooming.xlsx", sheet = "dip")
+dip$paid <- ifelse(dip$paid == "yes",TRUE,FALSE)
+formattable(dip, list(paid = formatter("span",
+      style = x ~ style(color = ifelse(x, "green", "red")),
+      x ~ icontext(ifelse(x, "ok", "remove"), ifelse(x, "Yes", "No")))))
+            
+```
+
+
+
+
